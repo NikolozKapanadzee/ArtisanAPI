@@ -40,4 +40,8 @@ export class CreateArtisanDto {
   @IsString()
   @IsOptional()
   avatarUrl?: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  experience: number;
 }
