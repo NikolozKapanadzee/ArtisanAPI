@@ -8,6 +8,7 @@ import { UpdateArtisanDto } from './dto/update-artisan.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Artisan } from './schema/artisan.schema';
 import { isValidObjectId, Model } from 'mongoose';
+import { FilterArtisanDto } from './dto/filter-artisan.dto';
 
 @Injectable()
 export class ArtisanService {
@@ -27,8 +28,13 @@ export class ArtisanService {
     };
   }
 
-  async findAll() {
-    return await this.ArtisanModel.find();
+  async findAll(filterArtisanDto: FilterArtisanDto) {
+    const { specialty } = filterArtisanDto;
+    const filter: any = {};
+    if (specialty?.length) {
+      filter.specialty = { $in: specialty };
+    }
+    return this.ArtisanModel.find(filter);
   }
 
   async findOne(id: string) {
