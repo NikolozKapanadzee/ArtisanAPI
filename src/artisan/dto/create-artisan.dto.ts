@@ -5,6 +5,8 @@ import {
   IsEnum,
   IsOptional,
   IsNotEmpty,
+  IsArray,
+  ArrayUnique,
 } from 'class-validator';
 import { ArtisanSpecialty } from 'src/enum/specialty.enum';
 
@@ -26,8 +28,10 @@ export class CreateArtisanDto {
   phoneNumber: number;
 
   @IsNotEmpty()
-  @IsEnum(ArtisanSpecialty)
-  specialty: ArtisanSpecialty;
+  @IsArray()
+  @IsEnum(ArtisanSpecialty, { each: true })
+  @ArrayUnique()
+  specialty: ArtisanSpecialty[];
 
   @IsNotEmpty()
   @IsString()

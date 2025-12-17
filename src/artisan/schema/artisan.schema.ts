@@ -15,8 +15,8 @@ export class Artisan {
   @Prop({ required: true })
   phoneNumber: number;
 
-  @Prop({ required: true, enum: ArtisanSpecialty })
-  specialty: ArtisanSpecialty;
+  @Prop({ required: true, enum: ArtisanSpecialty, type: [String] })
+  specialty: ArtisanSpecialty[];
 
   @Prop({ required: true })
   description: string;
