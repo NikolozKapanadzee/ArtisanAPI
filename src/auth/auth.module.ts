@@ -3,10 +3,14 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { Artisan, ArtisanSchema } from 'src/artisan/schema/artisan.schema';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ schema: ArtisanSchema, name: Artisan.name }]),
+    ConfigModule.forRoot(),
+    JwtModule.register({ global: true, secret: process.env.JWT_SECRET }),
   ],
   controllers: [AuthController],
   providers: [AuthService],

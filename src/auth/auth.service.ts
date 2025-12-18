@@ -1,14 +1,21 @@
 import { Artisan } from 'src/artisan/schema/artisan.schema';
 import { SignUpDto } from './dto/signUp.dto';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { SignInDto } from './dto/signIn.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(Artisan.name) private artisanModel: Model<Artisan>,
+    private jwtService: JwtService,
   ) {}
   async signUp(signUpDto: SignUpDto) {
     const {
@@ -45,5 +52,29 @@ export class AuthService {
       message: 'artisan created successfully',
       data: artisanWithoutPassword,
     };
+  }
+
+  async signIn(signInDto: SignInDto) {
+    const { email, password } = signInDto;
+    const existArtisan = await this.artisanModel
+      .findOne({ email })
+      .select('password');
+    if (!existArtisan) {
+      throw new NotFoundException('artisan does not exist');
+    }
+    const isPassEqual = await bcrypt.compare(password, existArtisan.password);
+    if (!isPassEqual) {
+      throw new BadRequestException('invalid credentials');
+    }
+    const payload = { id: existArtisan._id };
+    const token = this.jwtService.sign(payload, { expiresIn: '1h' });
+    return {
+      message: 'signIn passed successfully',
+      token: token,
+    };
+  }
+  async getCurrentArtisan(artisanId) {
+    const artisan = await this.artisanModel.findById(artisanId);
+    return artisan;
   }
 }
