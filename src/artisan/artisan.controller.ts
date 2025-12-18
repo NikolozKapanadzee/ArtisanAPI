@@ -17,11 +17,6 @@ import { FilterArtisanDto } from './dto/filter-artisan.dto';
 export class ArtisanController {
   constructor(private readonly artisanService: ArtisanService) {}
 
-  @Post()
-  create(@Body() createArtisanDto: CreateArtisanDto) {
-    return this.artisanService.create(createArtisanDto);
-  }
-
   @Get()
   findAll(@Query() filterArtisanDto: FilterArtisanDto) {
     return this.artisanService.findAll(filterArtisanDto);

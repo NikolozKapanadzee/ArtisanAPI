@@ -15,19 +15,6 @@ export class ArtisanService {
   constructor(
     @InjectModel(Artisan.name) private ArtisanModel: Model<Artisan>,
   ) {}
-  async create(createArtisanDto: CreateArtisanDto) {
-    const { mail } = createArtisanDto;
-    const existArtisan = await this.ArtisanModel.findOne({ mail });
-    if (existArtisan) {
-      throw new BadRequestException('Artisan alraedy exists');
-    }
-    const newArtisan = await this.ArtisanModel.create(createArtisanDto);
-    return {
-      message: 'artisan created successfully',
-      data: newArtisan,
-    };
-  }
-
   async findAll(filterArtisanDto: FilterArtisanDto) {
     const { specialty } = filterArtisanDto;
     const filter: any = {};

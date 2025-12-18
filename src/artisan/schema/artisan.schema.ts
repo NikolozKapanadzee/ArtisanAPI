@@ -7,7 +7,7 @@ export class Artisan {
   name: string;
 
   @Prop({ required: true, unique: true })
-  mail: string;
+  email: string;
 
   @Prop({ required: true })
   password: string;
