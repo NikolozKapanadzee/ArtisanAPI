@@ -17,7 +17,7 @@ export class CreateArtisanDto {
 
   @IsNotEmpty()
   @IsEmail()
-  mail: string;
+  email: string;
 
   @IsNotEmpty()
   @IsString()

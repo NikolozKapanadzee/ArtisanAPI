@@ -33,6 +33,10 @@ export class AuthService {
     if (existArtisan) {
       throw new BadRequestException('artisan already exist');
     }
+    const existNumber = await this.artisanModel.findOne({ phoneNumber });
+    if (existNumber) {
+      throw new BadRequestException('mobile number is already in use');
+    }
     const hashedPass = await bcrypt.hash(password, 10);
     const newArtisan = await this.artisanModel.create({
       email,
