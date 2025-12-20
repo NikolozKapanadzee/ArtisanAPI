@@ -12,7 +12,7 @@ export class Artisan {
   @Prop({ required: true })
   password: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   phoneNumber: number;
 
   @Prop({ required: true, enum: ArtisanSpecialty, type: [String] })
