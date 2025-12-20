@@ -7,6 +7,7 @@ import { UserSignUpDto } from './dto/userSignUp.dto';
 import { UserSignInDto } from './dto/userSignIn.dto';
 import { IsArtisanAuthGuard } from 'src/guard/IsArtisanAuthGuard.guard';
 import { UserId } from 'src/decorator/user.decorator';
+import { IsUserAuthGuard } from 'src/guard/IsUserAuthGuard.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -37,6 +38,7 @@ export class AuthController {
   }
 
   @Get('user/current-user')
+  @UseGuards(IsUserAuthGuard)
   getCurrentUser(@UserId() userId) {
     return this.authService.getCurrentUser(userId);
   }
