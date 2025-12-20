@@ -3,7 +3,10 @@ import { AuthService } from './auth.service';
 import { ArtisanSignUpDto } from './dto/artisanSignUp.dto';
 import { ArtisanSignInDto } from './dto/artisanSignIn.dto';
 import { ArtisanId } from 'src/decorator/artisan.decorator';
-import { IsAuthGuard } from 'src/guard/IsAuthGuard.guard';
+import { UserSignUpDto } from './dto/userSignUp.dto';
+import { UserSignInDto } from './dto/userSignIn.dto';
+import { IsArtisanAuthGuard } from 'src/guard/IsArtisanAuthGuard.guard';
+import { UserId } from 'src/decorator/user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -17,9 +20,24 @@ export class AuthController {
   artisanSignIn(@Body() artisanSignInDto: ArtisanSignInDto) {
     return this.authService.artisanSignIn(artisanSignInDto);
   }
+
+  @Post('user/sign-up')
+  userSignUp(@Body() userSignUpDto: UserSignUpDto) {
+    return this.authService.userSignUp(userSignUpDto);
+  }
+  @Post('user/sign-in')
+  userSignIn(@Body() userSignInDto: UserSignInDto) {
+    return this.authService.userSignIn(userSignInDto);
+  }
+
   @Get('artisan/current-artisan')
-  @UseGuards(IsAuthGuard)
+  @UseGuards(IsArtisanAuthGuard)
   getCurrentArtisan(@ArtisanId() artisanId) {
     return this.authService.getCurrentArtisan(artisanId);
+  }
+
+  @Get('user/current-user')
+  getCurrentUser(@UserId() userId) {
+    return this.authService.getCurrentUser(userId);
   }
 }

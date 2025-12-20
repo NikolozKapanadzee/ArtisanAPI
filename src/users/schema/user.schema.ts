@@ -13,8 +13,7 @@ export class User {
   @Prop({
     type: String,
     required: true,
-    minLength: 6,
-    maxLength: 20,
+    select: false,
   })
   password: string;
 

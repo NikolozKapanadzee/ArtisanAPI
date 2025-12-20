@@ -1,3 +1,4 @@
+// src/guard/IsUserAuthGuard.guard.ts (NEW - for users)
 import {
   CanActivate,
   ExecutionContext,
@@ -8,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class IsAuthGuard implements CanActivate {
+export class IsUserAuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
   canActivate(
@@ -25,7 +26,7 @@ export class IsAuthGuard implements CanActivate {
       const payload = this.jwtService.verify(token, {
         secret: process.env.JWT_SECRET,
       });
-      req.artisan = { id: payload.id };
+      req.user = { id: payload.id };
     } catch (e) {
       throw new UnauthorizedException('Token expired or invalid');
     }
