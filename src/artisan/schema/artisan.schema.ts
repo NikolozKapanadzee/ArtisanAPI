@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 import { ArtisanSpecialty } from 'src/enum/specialty.enum';
+import { Rating } from 'src/rating/schema/rating.schema';
 
 @Schema({ timestamps: true })
 export class Artisan {
@@ -30,11 +32,25 @@ export class Artisan {
   @Prop({
     type: Number,
     required: false,
+    default: 0,
   })
   averageRateness?: number;
 
+  @Prop({
+    type: Number,
+    required: false,
+    default: 0,
+  })
+  totalRatings?: number;
+
   @Prop({ required: true, type: Number, min: 0 })
   experience: number;
+
+  @Prop({
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: Rating.name }],
+    default: [],
+  })
+  ratingHistory: mongoose.Types.ObjectId[];
 }
 
 export const ArtisanSchema = SchemaFactory.createForClass(Artisan);
