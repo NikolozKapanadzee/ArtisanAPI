@@ -23,7 +23,7 @@ export class CreateRatingDto {
 
   @IsOptional()
   @IsString()
-  @MinLength(10, { message: 'Comment must be at least 10 characters long' })
+  @MinLength(4, { message: 'Comment must be at least 4 characters long' })
   comment?: string;
 
   @ValidateIf((o) => !o.rating && !o.comment)

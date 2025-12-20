@@ -7,25 +7,29 @@ import {
   Param,
   Delete,
   Request,
+  UseGuards,
 } from '@nestjs/common';
 import { RatingService } from './rating.service';
 import { CreateRatingDto } from './dto/create-rating.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
 import { ArtisanId } from 'src/decorator/artisan.decorator';
+import { UserId } from 'src/decorator/user.decorator';
+import { IsUserAuthGuard } from 'src/guard/IsUserAuthGuard.guard';
 
 @Controller('rating')
+@UseGuards(IsUserAuthGuard)
 export class RatingController {
   constructor(private readonly ratingService: RatingService) {}
 
   @Post()
   create(
     @Body() createRatingDto: CreateRatingDto,
-    @Request() req,
-    @ArtisanId() artisanId,
+    @UserId()
+    userId,
   ) {
     return this.ratingService.create(
-      req.user.id,
-      artisanId,
+      userId,
+      createRatingDto.artisanId,
       createRatingDto.rating,
       createRatingDto.comment,
     );

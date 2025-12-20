@@ -26,8 +26,8 @@ export class RatingService {
       );
     }
     const existingRating = await this.ratingModel.findOne({
-      userId,
-      artisanId,
+      userId: new mongoose.Types.ObjectId(userId),
+      artisanId: new mongoose.Types.ObjectId(artisanId),
     });
     if (existingRating) {
       throw new BadRequestException(
@@ -36,7 +36,7 @@ export class RatingService {
     }
     const newRating = await this.ratingModel.create({
       userId: new mongoose.Types.ObjectId(userId),
-      artisanId,
+      artisanId: new mongoose.Types.ObjectId(artisanId),
       rating,
       comment,
     });
