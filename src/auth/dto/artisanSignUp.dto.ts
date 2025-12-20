@@ -10,7 +10,7 @@ import {
 } from 'class-validator';
 import { ArtisanSpecialty } from 'src/enum/specialty.enum';
 
-export class SignUpDto {
+export class ArtisanSignUpDto {
   @IsNotEmpty()
   @IsString()
   name: string;

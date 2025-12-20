@@ -5,10 +5,14 @@ import { Artisan, ArtisanSchema } from 'src/artisan/schema/artisan.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { User, UserSchema } from 'src/users/schema/user.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ schema: ArtisanSchema, name: Artisan.name }]),
+    MongooseModule.forFeature([
+      { schema: ArtisanSchema, name: Artisan.name },
+      { schema: UserSchema, name: User.name },
+    ]),
     ConfigModule.forRoot(),
     JwtModule.register({ global: true, secret: process.env.JWT_SECRET }),
   ],

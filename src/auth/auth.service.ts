@@ -1,5 +1,5 @@
 import { Artisan } from 'src/artisan/schema/artisan.schema';
-import { SignUpDto } from './dto/signUp.dto';
+import { ArtisanSignUpDto } from './dto/artisanSignUp.dto';
 import {
   BadRequestException,
   Injectable,
@@ -8,16 +8,18 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { SignInDto } from './dto/signIn.dto';
+import { ArtisanSignInDto } from './dto/artisanSignIn.dto';
 import { JwtService } from '@nestjs/jwt';
+import { User } from 'src/users/schema/user.schema';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(Artisan.name) private artisanModel: Model<Artisan>,
+    @InjectModel(User.name) private userModel: Model<User>,
     private jwtService: JwtService,
   ) {}
-  async signUp(signUpDto: SignUpDto) {
+  async artisanSignUp(artisanSignUpDto: ArtisanSignUpDto) {
     const {
       email,
       password,
@@ -28,7 +30,7 @@ export class AuthService {
       linkOfSocialMedia,
       avatarUrl,
       experience,
-    } = signUpDto;
+    } = artisanSignUpDto;
     const existArtisan = await this.artisanModel.findOne({ email });
     if (existArtisan) {
       throw new BadRequestException('artisan already exist');
@@ -58,8 +60,8 @@ export class AuthService {
     };
   }
 
-  async signIn(signInDto: SignInDto) {
-    const { email, password } = signInDto;
+  async artisanSignIn(artisanSignInDto: ArtisanSignInDto) {
+    const { email, password } = artisanSignInDto;
     const existArtisan = await this.artisanModel
       .findOne({ email })
       .select('password');

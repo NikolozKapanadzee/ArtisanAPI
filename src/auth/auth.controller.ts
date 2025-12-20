@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SignUpDto } from './dto/signUp.dto';
-import { SignInDto } from './dto/signIn.dto';
+import { ArtisanSignUpDto } from './dto/artisanSignUp.dto';
+import { ArtisanSignInDto } from './dto/artisanSignIn.dto';
 import { ArtisanId } from 'src/decorator/artisan.decorator';
 import { IsAuthGuard } from 'src/guard/IsAuthGuard.guard';
 
@@ -9,17 +9,17 @@ import { IsAuthGuard } from 'src/guard/IsAuthGuard.guard';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('sign-up')
-  signUp(@Body() signUpDto: SignUpDto) {
-    return this.authService.signUp(signUpDto);
+  @Post('artisan/sign-up')
+  artisanSignUp(@Body() aritsanSignUpDto: ArtisanSignUpDto) {
+    return this.authService.artisanSignUp(aritsanSignUpDto);
   }
-  @Post('sign-in')
-  signIn(@Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto);
+  @Post('artisan/sign-in')
+  artisanSignIn(@Body() artisanSignInDto: ArtisanSignInDto) {
+    return this.authService.artisanSignIn(artisanSignInDto);
   }
-  @Get('current-artisan')
+  @Get('artisan/current-artisan')
   @UseGuards(IsAuthGuard)
-  getCurrentUser(@ArtisanId() artisanId) {
+  getCurrentArtisan(@ArtisanId() artisanId) {
     return this.authService.getCurrentArtisan(artisanId);
   }
 }

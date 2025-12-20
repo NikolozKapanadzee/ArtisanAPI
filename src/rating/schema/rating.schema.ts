@@ -14,7 +14,7 @@ export class Rating {
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref: Artisan.name,
+    ref: 'artisan',
     required: true,
   })
   artisanId: mongoose.Types.ObjectId;
