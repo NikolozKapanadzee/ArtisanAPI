@@ -1,31 +1,28 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
-  Request,
   UseGuards,
+  Param,
+  Get,
+  Put,
+  Delete,
 } from '@nestjs/common';
-import { RatingService } from './rating.service';
+import { IsUserAuthGuard } from '../guard/IsUserAuthGuard.guard';
+import { UserId } from '../decorator/user.decorator';
 import { CreateRatingDto } from './dto/create-rating.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
-import { ArtisanId } from 'src/decorator/artisan.decorator';
-import { UserId } from 'src/decorator/user.decorator';
-import { IsUserAuthGuard } from 'src/guard/IsUserAuthGuard.guard';
+import { RatingService } from './rating.service';
 
-@Controller('rating')
+@Controller('ratings')
 @UseGuards(IsUserAuthGuard)
 export class RatingController {
   constructor(private readonly ratingService: RatingService) {}
 
   @Post()
-  create(
+  async createRating(
     @Body() createRatingDto: CreateRatingDto,
-    @UserId()
-    userId,
+    @UserId() userId: string,
   ) {
     return this.ratingService.create(
       userId,
@@ -35,23 +32,35 @@ export class RatingController {
     );
   }
 
-  @Get()
-  findAll() {
-    return this.ratingService.findAll();
+  @Get('my-history')
+  async getMyRatingHistory(@UserId() userId: string) {
+    return this.ratingService.getUserRatingHistory(userId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ratingService.findOne(+id);
+  @Put(':ratingId')
+  async updateRating(
+    @Param('ratingId') ratingId: string,
+    @Body() updateRatingDto: UpdateRatingDto,
+    @UserId() userId: string,
+  ) {
+    return this.ratingService.updateRating(
+      ratingId,
+      userId,
+      updateRatingDto.rating,
+      updateRatingDto.comment,
+    );
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRatingDto: UpdateRatingDto) {
-    return this.ratingService.update(+id, updateRatingDto);
+  @Delete(':ratingId')
+  async deleteRating(
+    @Param('ratingId') ratingId: string,
+    @UserId() userId: string,
+  ) {
+    return this.ratingService.deleteRating(ratingId, userId);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ratingService.remove(+id);
+  @Get('artisan/:artisanId')
+  async getArtisanRatings(@Param('artisanId') artisanId: string) {
+    return this.ratingService.getArtisanRatingHistory(artisanId);
   }
 }

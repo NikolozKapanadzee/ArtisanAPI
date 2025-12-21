@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { Rating } from 'src/rating/schema/rating.schema';
 
 @Schema({ timestamps: true })
 export class User {
@@ -18,7 +17,7 @@ export class User {
   password: string;
 
   @Prop({
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'rating' }],
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Rating' }],
     default: [],
   })
   ratingHistory: mongoose.Types.ObjectId[];

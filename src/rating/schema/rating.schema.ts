@@ -1,10 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
-import { Artisan } from 'src/artisan/schema/artisan.schema';
+import mongoose, { Document } from 'mongoose';
 import { User } from 'src/users/schema/user.schema';
 
 @Schema({ timestamps: true })
-export class Rating {
+export class Rating extends Document {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: User.name,
@@ -14,7 +13,7 @@ export class Rating {
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'artisan',
+    ref: 'Artisan',
     required: true,
   })
   artisanId: mongoose.Types.ObjectId;
@@ -33,5 +32,4 @@ export class Rating {
   })
   comment?: string;
 }
-
-export const ratingSchema = SchemaFactory.createForClass(Rating);
+export const RatingSchema = SchemaFactory.createForClass(Rating);
