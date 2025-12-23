@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsEnum, IsOptional, IsArray } from 'class-validator';
+import { IsEnum, IsOptional } from 'class-validator';
 import { ArtisanSpecialty } from 'src/enum/specialty.enum';
 
 export class FilterArtisanDto {
