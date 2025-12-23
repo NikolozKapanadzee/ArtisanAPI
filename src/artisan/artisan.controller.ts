@@ -20,7 +20,7 @@ export class ArtisanController {
   constructor(private readonly artisanService: ArtisanService) {}
 
   @Post('upload-avatar')
-  @UseInterceptors(FileInterceptor('avatar'))
+  @UseInterceptors(FileInterceptor('file'))
   uploadFile(@UploadedFile() file: Express.Multer.File) {
     return this.artisanService.uploadFile(file);
   }

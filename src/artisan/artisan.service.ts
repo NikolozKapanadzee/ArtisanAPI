@@ -21,8 +21,7 @@ export class ArtisanService {
   async uploadFile(file: Express.Multer.File) {
     const fileType = file.mimetype.split('/')[1];
     const fileId = `avatars/${uuidv4()}.${fileType}`;
-    await this.awsService.uploadFile(file, fileId);
-    console.log(file, fileId);
+    await this.awsService.uploadFile(fileId, file);
     return fileId;
   }
 
