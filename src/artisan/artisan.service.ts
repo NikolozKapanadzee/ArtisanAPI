@@ -3,18 +3,29 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateArtisanDto } from './dto/create-artisan.dto';
 import { UpdateArtisanDto } from './dto/update-artisan.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Artisan } from './schema/artisan.schema';
 import { isValidObjectId, Model } from 'mongoose';
 import { FilterArtisanDto } from './dto/filter-artisan.dto';
+import { AwsService } from 'src/aws/aws.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class ArtisanService {
   constructor(
     @InjectModel(Artisan.name) private ArtisanModel: Model<Artisan>,
+    private awsService: AwsService,
   ) {}
+
+  async uploadFile(file: Express.Multer.File) {
+    const fileType = file.mimetype.split('/')[1];
+    const fileId = `avatars/${uuidv4()}.${fileType}`;
+    await this.awsService.uploadFile(file, fileId);
+    console.log(file, fileId);
+    return fileId;
+  }
+
   async findAll(filterArtisanDto: FilterArtisanDto) {
     const { specialty } = filterArtisanDto;
     const filter: any = {};

@@ -6,11 +6,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { User, UserSchema } from 'src/users/schema/user.schema';
-import { AwsModule } from 'src/aws/aws.module';
 
 @Module({
   imports: [
-    AwsModule,
     MongooseModule.forFeature([
       { schema: ArtisanSchema, name: Artisan.name },
       { schema: UserSchema, name: User.name },

@@ -7,15 +7,23 @@ import {
   Param,
   Delete,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ArtisanService } from './artisan.service';
-import { CreateArtisanDto } from './dto/create-artisan.dto';
 import { UpdateArtisanDto } from './dto/update-artisan.dto';
 import { FilterArtisanDto } from './dto/filter-artisan.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('artisan')
 export class ArtisanController {
   constructor(private readonly artisanService: ArtisanService) {}
+
+  @Post('upload-avatar')
+  @UseInterceptors(FileInterceptor('avatar'))
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    return this.artisanService.uploadFile(file);
+  }
 
   @Get()
   findAll(@Query() filterArtisanDto: FilterArtisanDto) {
