@@ -18,10 +18,11 @@ export class ArtisanService {
     private awsService: AwsService,
   ) {}
 
-  async uploadFile(file: Express.Multer.File) {
+  async uploadFile(file: Express.Multer.File, artisanId) {
     const fileType = file.mimetype.split('/')[1];
     const fileId = `avatars/${uuidv4()}.${fileType}`;
     await this.awsService.uploadFile(fileId, file);
+    await this.ArtisanModel.findByIdAndUpdate(artisanId, { avatarUrl: fileId });
     return fileId;
   }
 

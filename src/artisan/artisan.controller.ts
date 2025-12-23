@@ -9,20 +9,27 @@ import {
   Query,
   UploadedFile,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { ArtisanService } from './artisan.service';
 import { UpdateArtisanDto } from './dto/update-artisan.dto';
 import { FilterArtisanDto } from './dto/filter-artisan.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ArtisanId } from 'src/decorator/artisan.decorator';
+import { IsArtisanAuthGuard } from 'src/guard/IsArtisanAuthGuard.guard';
 
 @Controller('artisan')
 export class ArtisanController {
   constructor(private readonly artisanService: ArtisanService) {}
 
   @Post('upload-avatar')
+  @UseGuards(IsArtisanAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return this.artisanService.uploadFile(file);
+  uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+    @ArtisanId() artisanId,
+  ) {
+    return this.artisanService.uploadFile(file, artisanId);
   }
 
   @Get()
