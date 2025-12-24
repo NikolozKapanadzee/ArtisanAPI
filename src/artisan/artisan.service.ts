@@ -18,6 +18,18 @@ export class ArtisanService {
     private awsService: AwsService,
   ) {}
 
+  async deleteFileById(fileId: string, artisanId: string) {
+    const deletedFile = await this.awsService.deleteFileById(fileId);
+    await this.ArtisanModel.findByIdAndUpdate(artisanId, {
+      avatarUrl: null,
+    });
+    return deletedFile;
+  }
+
+  async getFileById(fileId: string) {
+    return this.awsService.getFileById(fileId);
+  }
+
   async uploadFile(file: Express.Multer.File, artisanId) {
     const fileType = file.mimetype.split('/')[1];
     const fileId = `avatars/${uuidv4()}.${fileType}`;

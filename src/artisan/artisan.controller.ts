@@ -22,6 +22,17 @@ import { IsArtisanAuthGuard } from 'src/guard/IsArtisanAuthGuard.guard';
 export class ArtisanController {
   constructor(private readonly artisanService: ArtisanService) {}
 
+  @Delete('file')
+  @UseGuards(IsArtisanAuthGuard)
+  deleteFile(@Body('fileId') fileId: string, @ArtisanId() artisanId) {
+    return this.artisanService.deleteFileById(fileId, artisanId);
+  }
+
+  @Post('get-file')
+  getFile(@Body('fileId') fileId: string) {
+    return this.artisanService.getFileById(fileId);
+  }
+
   @Post('upload-avatar')
   @UseGuards(IsArtisanAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
