@@ -39,10 +39,13 @@ export class ArtisanService {
   }
 
   async findAll(filterArtisanDto: FilterArtisanDto) {
-    const { specialty } = filterArtisanDto;
+    const { specialty, city } = filterArtisanDto;
     const filter: any = {};
     if (specialty?.length) {
       filter.specialty = { $in: specialty };
+    }
+    if (city?.length) {
+      filter.city = { $in: city };
     }
     return this.ArtisanModel.find(filter);
   }
