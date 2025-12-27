@@ -32,6 +32,7 @@ export class AuthService {
       linkOfSocialMedia,
       avatarUrl,
       experience,
+      city,
     } = artisanSignUpDto;
     const existArtisan = await this.artisanModel.findOne({ email });
     if (existArtisan) {
@@ -52,6 +53,7 @@ export class AuthService {
       linkOfSocialMedia,
       avatarUrl,
       experience,
+      city,
     });
     const artisanWithoutPassword = await this.artisanModel
       .findById(newArtisan._id)

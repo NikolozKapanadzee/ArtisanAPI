@@ -1,0 +1,15 @@
+export enum ArtisanCity {
+  TBILISI = 'tbilisi',
+  KUTAISI = 'kutaisi',
+  BATUMI = 'batumi',
+  RUSTAVI = 'rustavi',
+  ZUGDIDI = 'zugdidi',
+  POTSOMI = 'poti',
+  GORI = 'gori',
+  SAMTREDIA = 'samtredia',
+  TELAVI = 'telavi',
+  SENAKI = 'senaki',
+  MARNEULI = 'marneuli',
+  AKHALTSIKHE = 'akhaltsikhe',
+  BOLNISI = 'bolnisi',
+}

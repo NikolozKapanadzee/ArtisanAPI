@@ -8,6 +8,7 @@ import {
   IsArray,
   ArrayUnique,
 } from 'class-validator';
+import { ArtisanCity } from 'src/enum/city.enum';
 import { ArtisanSpecialty } from 'src/enum/specialty.enum';
 
 export class ArtisanSignUpDto {
@@ -48,4 +49,9 @@ export class ArtisanSignUpDto {
   @IsNumber()
   @IsNotEmpty()
   experience: number;
+
+  @IsString()
+  @IsEnum(ArtisanCity)
+  @IsNotEmpty()
+  city: string;
 }
