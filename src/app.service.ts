@@ -8,7 +8,7 @@ export class AppService {
     return 'Hello World!';
   }
   async sendEmail(to, subject, content) {
-    await this.emailService.sendTextToSomeone(to, subject, content);
+    await this.emailService.sendHtmlToSomeone(to, subject, content);
     console.log('first email send succ');
   }
 }
