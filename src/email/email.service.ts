@@ -4,32 +4,22 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class EmailService {
   constructor(private mailerService: MailerService) {}
-  async sendTextToSomeone(to, subject, content) {
-    const options = {
-      to,
-      from: `<teamupts@gmail.com> Artisan`,
-      subject,
-      text: content,
-    };
-    await this.mailerService.sendMail(options);
-  }
 
-  async sendHtmlToSomeone(to, subject, content) {
+  async sendOtpCode(to: string, otpCode: number) {
     const options = {
       to,
       from: '"Artisan" <teamupts@gmail.com>',
-      subject,
+      subject: 'Your OTP Verification Code',
       html: `
       <!DOCTYPE html>
       <html lang="en">
         <head>
           <meta charset="UTF-8" />
-          <title>${subject}</title>
           <style>
             body {
               margin: 0;
               padding: 0;
-              background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+              background: #f0f2f5;
               font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             }
 
@@ -38,53 +28,50 @@ export class EmailService {
             }
 
             .card {
-              max-width: 600px;
+              max-width: 500px;
               margin: 0 auto;
               background: #ffffff;
-              border-radius: 16px;
+              border-radius: 12px;
               padding: 40px 32px;
-              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+              box-shadow: 0 10px 30px rgba(0,0,0,0.1);
               text-align: center;
             }
 
-            .badge {
-              display: inline-block;
-              padding: 6px 14px;
-              border-radius: 999px;
-              background: #f1f5f9;
-              color: #475569;
-              font-size: 12px;
-              font-weight: 600;
-              letter-spacing: 0.5px;
+            .header {
+              font-size: 24px;
+              font-weight: 700;
+              color: #0f172a;
               margin-bottom: 20px;
             }
 
-            h1 {
-              margin: 0;
-              font-size: 32px;
-              color: #0f172a;
-              letter-spacing: -0.5px;
-            }
-
-            p {
-              margin: 20px 0 0;
+            .instruction {
               font-size: 16px;
               color: #475569;
-              line-height: 1.6;
+              margin-bottom: 30px;
             }
 
-            .divider {
-              margin: 32px auto;
-              width: 60px;
-              height: 4px;
-              border-radius: 4px;
-              background: linear-gradient(90deg, #6366f1, #22d3ee);
+            .otp {
+              display: inline-block;
+              background: #6366f1;
+              color: #ffffff;
+              font-size: 28px;
+              font-weight: 700;
+              letter-spacing: 6px;
+              padding: 12px 24px;
+              border-radius: 8px;
+              margin-bottom: 30px;
             }
 
             .footer {
-              margin-top: 40px;
               font-size: 12px;
               color: #94a3b8;
+              margin-top: 20px;
+            }
+
+            .note {
+              font-size: 14px;
+              color: #64748b;
+              margin-top: 10px;
             }
           </style>
         </head>
@@ -92,15 +79,16 @@ export class EmailService {
         <body>
           <div class="wrapper">
             <div class="card">
-              <div class="badge">IMPORTANT</div>
+              <div class="header">Your OTP Code</div>
+              <div class="instruction">
+                Use the following code to verify your account. It will expire in 3 minutes.
+              </div>
 
-              <h1>${subject}</h1>
+              <div class="otp">${otpCode}</div>
 
-              <div class="divider"></div>
-
-              <p>
-                ${content}
-              </p>
+              <div class="note">
+                If you did not request this, please ignore this email.
+              </div>
 
               <div class="footer">
                 © 2026 Artisan. All rights reserved.
@@ -109,9 +97,9 @@ export class EmailService {
           </div>
         </body>
       </html>
-
     `,
     };
+
     await this.mailerService.sendMail(options);
   }
 }

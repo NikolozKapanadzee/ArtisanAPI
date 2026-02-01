@@ -13,6 +13,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/users/schema/user.schema';
 import { UserSignUpDto } from './dto/userSignUp.dto';
 import { UserSignInDto } from './dto/userSignIn.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class AuthService {
@@ -20,6 +21,7 @@ export class AuthService {
     @InjectModel(Artisan.name) private artisanModel: Model<Artisan>,
     @InjectModel(User.name) private userModel: Model<User>,
     private jwtService: JwtService,
+    private emailService: EmailService,
   ) {}
   async artisanSignUp(artisanSignUpDto: ArtisanSignUpDto) {
     const {
@@ -43,6 +45,15 @@ export class AuthService {
       throw new BadRequestException('mobile number is already in use');
     }
     const hashedPass = await bcrypt.hash(password, 10);
+
+    const otpCode = Math.random().toString().slice(2, 8);
+    const otpCodeToNumber = Number(otpCode);
+    const validationDate = new Date();
+    console.log(validationDate);
+
+    validationDate.setTime(validationDate.getTime() + 3 * 60 * 1000);
+    console.log(validationDate);
+
     const newArtisan = await this.artisanModel.create({
       email,
       password: hashedPass,
@@ -54,14 +65,16 @@ export class AuthService {
       avatarUrl,
       experience,
       city,
+      OTPCode: otpCodeToNumber,
+      OTPValidationDate: validationDate,
     });
     const artisanWithoutPassword = await this.artisanModel
       .findById(newArtisan._id)
       .select('-password');
-    return {
-      message: 'artisan created successfully',
-      data: artisanWithoutPassword,
-    };
+
+    await this.emailService.sendOtpCode(email, otpCodeToNumber);
+
+    return 'Check Email For Continue Verification Process';
   }
 
   async artisanSignIn(artisanSignInDto: ArtisanSignInDto) {

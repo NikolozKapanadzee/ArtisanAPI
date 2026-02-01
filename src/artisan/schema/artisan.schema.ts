@@ -6,6 +6,22 @@ import { Rating } from 'src/rating/schema/rating.schema';
 
 @Schema({ timestamps: true })
 export class Artisan {
+  @Prop({
+    type: Boolean,
+    default: false,
+  })
+  isActive: boolean;
+
+  @Prop({
+    type: Number,
+  })
+  OTPCode: number;
+
+  @Prop({
+    type: Date,
+  })
+  OTPValidationDate: Date;
+
   @Prop({ required: true })
   name: string;
 
