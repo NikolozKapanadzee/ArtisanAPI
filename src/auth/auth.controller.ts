@@ -8,6 +8,7 @@ import { UserSignInDto } from './dto/userSignIn.dto';
 import { IsArtisanAuthGuard } from 'src/guard/IsArtisanAuthGuard.guard';
 import { UserId } from 'src/decorator/user.decorator';
 import { IsUserAuthGuard } from 'src/guard/IsUserAuthGuard.guard';
+import { ArtisanVerifyEmailDto } from './dto/artisan-verify-email.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -17,6 +18,12 @@ export class AuthController {
   artisanSignUp(@Body() aritsanSignUpDto: ArtisanSignUpDto) {
     return this.authService.artisanSignUp(aritsanSignUpDto);
   }
+
+  @Post('artisan/verify-email')
+  artisanVerifyEmail(@Body() artisanVerifyEmailDto: ArtisanVerifyEmailDto) {
+    return this.authService.artisanVerifyEmail(artisanVerifyEmailDto);
+  }
+
   @Post('artisan/sign-in')
   artisanSignIn(@Body() artisanSignInDto: ArtisanSignInDto) {
     return this.authService.artisanSignIn(artisanSignInDto);

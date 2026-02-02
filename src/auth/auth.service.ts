@@ -14,6 +14,7 @@ import { User } from 'src/users/schema/user.schema';
 import { UserSignUpDto } from './dto/userSignUp.dto';
 import { UserSignInDto } from './dto/userSignIn.dto';
 import { EmailService } from 'src/email/email.service';
+import { ArtisanVerifyEmailDto } from './dto/artisan-verify-email.dto';
 
 @Injectable()
 export class AuthService {
@@ -77,6 +78,29 @@ export class AuthService {
     return 'Check Email For Continue Verification Process';
   }
 
+  async artisanVerifyEmail({ email, OTPCode }: ArtisanVerifyEmailDto) {
+    const artisan = await this.artisanModel.findOne({ email });
+    if (!artisan) {
+      throw new NotFoundException('artisan Not Found');
+    }
+    if (artisan.verified) {
+      throw new BadRequestException('artisan Is Already Verified');
+    }
+    if (artisan.OTPValidationDate < new Date()) {
+      throw new BadRequestException('OTP Code Has Expired');
+    }
+    if (artisan.OTPCode !== OTPCode) {
+      throw new BadRequestException('Invalid OTP Code Provided');
+    }
+    await this.artisanModel.updateOne(
+      { _id: artisan._id },
+      {
+        $set: { OTPCode: null, OTPValidationDate: null, verified: true },
+      },
+    );
+    return { verify: 'artisan verified successfully' };
+  }
+
   async artisanSignIn(artisanSignInDto: ArtisanSignInDto) {
     const { email, password } = artisanSignInDto;
     const existArtisan = await this.artisanModel
@@ -89,6 +113,11 @@ export class AuthService {
     if (!isPassEqual) {
       throw new BadRequestException('invalid credentials');
     }
+
+    if (!existArtisan.verified) {
+      throw new BadRequestException('Verify Email First');
+    }
+
     const payload = { id: existArtisan._id };
     const token = this.jwtService.sign(payload, { expiresIn: '1h' });
 

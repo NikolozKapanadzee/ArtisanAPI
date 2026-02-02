@@ -10,7 +10,7 @@ export class Artisan {
     type: Boolean,
     default: false,
   })
-  isActive: boolean;
+  verified: boolean;
 
   @Prop({
     type: Number,
