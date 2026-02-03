@@ -15,6 +15,7 @@ import { UserSignUpDto } from './dto/userSignUp.dto';
 import { UserSignInDto } from './dto/userSignIn.dto';
 import { EmailService } from 'src/email/email.service';
 import { ArtisanVerifyEmailDto } from './dto/artisan-verify-email.dto';
+import { ArtisanResendOTPCodeDto } from './dto/artisan-resend-otp-code.dto';
 
 @Injectable()
 export class AuthService {
@@ -51,8 +52,8 @@ export class AuthService {
     const otpCodeToNumber = Number(otpCode);
     const validationDate = new Date();
     console.log(validationDate);
-
     validationDate.setTime(validationDate.getTime() + 3 * 60 * 1000);
+
     console.log(validationDate);
 
     const newArtisan = await this.artisanModel.create({
@@ -101,11 +102,34 @@ export class AuthService {
     return { verify: 'artisan verified successfully' };
   }
 
+  async artisanResendOTPCode(artisanResendOTPCodeDto: ArtisanResendOTPCodeDto) {
+    const { email } = artisanResendOTPCodeDto;
+    const artisan = await this.artisanModel.findOne({ email });
+
+    const otpCode = Math.random().toString().slice(2, 8);
+    const otpCodeToNumber = Number(otpCode);
+    const validationDate = new Date();
+    console.log(validationDate);
+    validationDate.setTime(validationDate.getTime() + 3 * 60 * 1000);
+    console.log(validationDate);
+
+    await this.artisanModel.updateOne(
+      { _id: artisan?._id },
+      {
+        $set: { OTPCode: otpCode, OTPValidationDate: validationDate },
+      },
+    );
+    await this.emailService.sendOtpCode(email, otpCodeToNumber);
+    return {
+      message: 'OTPCode Has been sent to your email',
+    };
+  }
+
   async artisanSignIn(artisanSignInDto: ArtisanSignInDto) {
     const { email, password } = artisanSignInDto;
     const existArtisan = await this.artisanModel
       .findOne({ email })
-      .select('password');
+      .select('password verified');
     if (!existArtisan) {
       throw new NotFoundException('artisan does not exist');
     }

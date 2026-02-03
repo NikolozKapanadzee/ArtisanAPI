@@ -9,6 +9,7 @@ import { IsArtisanAuthGuard } from 'src/guard/IsArtisanAuthGuard.guard';
 import { UserId } from 'src/decorator/user.decorator';
 import { IsUserAuthGuard } from 'src/guard/IsUserAuthGuard.guard';
 import { ArtisanVerifyEmailDto } from './dto/artisan-verify-email.dto';
+import { ArtisanResendOTPCodeDto } from './dto/artisan-resend-otp-code.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -22,6 +23,12 @@ export class AuthController {
   @Post('artisan/verify-email')
   artisanVerifyEmail(@Body() artisanVerifyEmailDto: ArtisanVerifyEmailDto) {
     return this.authService.artisanVerifyEmail(artisanVerifyEmailDto);
+  }
+  @Post('artisan/resend-verification-code')
+  artisanResendOTPCode(
+    @Body() artisanResendOTPCodeDto: ArtisanResendOTPCodeDto,
+  ) {
+    return this.authService.artisanResendOTPCode(artisanResendOTPCodeDto);
   }
 
   @Post('artisan/sign-in')
