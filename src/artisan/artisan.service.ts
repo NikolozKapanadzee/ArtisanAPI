@@ -3,13 +3,13 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { UpdateArtisanDto } from './dto/update-artisan.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Artisan } from './schema/artisan.schema';
 import { isValidObjectId, Model } from 'mongoose';
 import { FilterArtisanDto } from './dto/filter-artisan.dto';
 import { AwsService } from 'src/aws/aws.service';
 import { v4 as uuidv4 } from 'uuid';
+import { UpdateArtisanDto } from './dto/update-artisan.dto';
 
 @Injectable()
 export class ArtisanService {
