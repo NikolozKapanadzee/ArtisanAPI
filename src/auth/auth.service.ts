@@ -99,7 +99,7 @@ export class AuthService {
         $set: { OTPCode: null, OTPValidationDate: null, verified: true },
       },
     );
-    return { verify: 'artisan verified successfully' };
+    return { message: 'artisan verified successfully' };
   }
 
   async artisanResendOTPCode(artisanResendOTPCodeDto: ArtisanResendOTPCodeDto) {

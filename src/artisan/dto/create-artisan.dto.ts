@@ -41,8 +41,6 @@ export class CreateArtisanDto {
 
   @ApiProperty({
     example: '555404040',
-    minLength: 9,
-    maxLength: 9,
   })
   @IsNotEmpty()
   @IsNumber()

@@ -40,13 +40,9 @@ export class ArtisanSignUpDto {
 
   @ApiProperty({
     example: '555404040',
-    minLength: 9,
-    maxLength: 9,
   })
   @IsNotEmpty()
   @IsNumber()
-  @MaxLength(9)
-  @MinLength(9)
   phoneNumber: number;
 
   @ApiProperty({

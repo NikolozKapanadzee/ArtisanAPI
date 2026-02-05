@@ -12,11 +12,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ArtisanService } from './artisan.service';
-import { UpdateArtisanDto } from './dto/update-artisan.dto';
 import { FilterArtisanDto } from './dto/filter-artisan.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ArtisanId } from 'src/decorator/artisan.decorator';
 import { IsArtisanAuthGuard } from 'src/guard/IsArtisanAuthGuard.guard';
+import { UpdateArtisanDto } from './dto/update-artisan.dto';
 
 @Controller('artisan')
 export class ArtisanController {
