@@ -21,6 +21,7 @@ async function bootstrap() {
     )
     .setVersion('1.0')
     .addTag('Artisan')
+    .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, documentFactory);

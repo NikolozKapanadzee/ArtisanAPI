@@ -3,7 +3,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schema/user.schema';
@@ -12,19 +11,6 @@ import { isValidObjectId, Model } from 'mongoose';
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
-
-  async create(createUserDto: CreateUserDto) {
-    const { email } = createUserDto;
-    const existUser = await this.userModel.findOne({ email });
-    if (existUser) {
-      throw new BadRequestException('user already exists');
-    }
-    const newUser = await this.userModel.create(createUserDto);
-    return {
-      message: 'user created successfully',
-      data: newUser,
-    };
-  }
 
   findAll() {
     return this.userModel.find();
