@@ -8,8 +8,6 @@ import {
   IsNotEmpty,
   IsArray,
   ArrayUnique,
-  MaxLength,
-  MinLength,
 } from 'class-validator';
 import { ArtisanCity } from 'src/enum/city.enum';
 import { ArtisanSpecialty } from 'src/enum/specialty.enum';
