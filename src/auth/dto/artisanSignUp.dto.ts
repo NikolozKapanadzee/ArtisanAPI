@@ -91,7 +91,7 @@ export class ArtisanSignUpDto {
 
   @ApiProperty({
     enum: ArtisanCity,
-    example: [ArtisanCity.TBILISI],
+    example: ArtisanCity.TBILISI,
   })
   @IsString()
   @IsEnum(ArtisanCity)
